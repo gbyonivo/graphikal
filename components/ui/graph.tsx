@@ -1,29 +1,17 @@
+import { LINE_COLORS, YKEYS } from '@/constants/graph'
 import { useThemeColor } from '@/hooks/useThemeColor'
 import { MarketDataPoint } from '@/types/market-data'
+import { YKey } from '@/types/market-data-graph'
 import { DashPathEffect } from '@shopify/react-native-skia'
-import Checkbox from 'expo-checkbox'
-import React, { useState } from 'react'
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { CartesianChart, Line } from 'victory-native'
+import { GraphControls } from './graph-controls'
+import { ZoomContainer } from './zoom-container'
 
 interface GraphProps {
   dataPoints: MarketDataPoint[]
   containerStyle?: StyleProp<ViewStyle>
-}
-
-type YKey = 'open' | 'high' | 'low' | 'close'
-const yKeys: YKey[] = ['open', 'high', 'low', 'close']
-const displayNames: Record<YKey, string> = {
-  open: 'Open',
-  high: 'High',
-  low: 'Low',
-  close: 'Close',
-}
-const colors: Record<YKey, string> = {
-  open: '#0A0A7C',
-  high: '#E8618C',
-  low: '#22CCB2',
-  close: '#7F55E0',
 }
 
 export function Graph({ dataPoints, containerStyle }: GraphProps) {
@@ -34,13 +22,31 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
     low: true,
     close: true,
   })
-  const displayedLines = yKeys.filter((key) => displayed[key])
+  const displayedLines = YKEYS.filter((key) => displayed[key])
+  // TODO: fix this type
+  const zoomContainerRef = useRef<any>(null)
 
   return (
     <View style={styles.container}>
       <View style={styles.graphContainer}>
-        <View
-          style={[{ backgroundColor }, styles.graphContainer, containerStyle]}
+        <ZoomContainer
+          containerStyle={[
+            { backgroundColor },
+            styles.graphContainer,
+            containerStyle,
+          ]}
+          ref={zoomContainerRef}
+          render={(scale) => {
+            // TODO: debug why is not changing disabled
+            return (
+              <GraphControls
+                displayed={displayed}
+                onSetDisplayed={setDisplayed}
+                resetZoom={() => zoomContainerRef.current?.resetZoom()}
+                resetZoomDisabled={scale.value === 1}
+              />
+            )
+          }}
         >
           <CartesianChart<
             Record<keyof MarketDataPoint, number>,
@@ -79,30 +85,14 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
                   <Line
                     key={key}
                     points={points[key]}
-                    color={colors[key]}
+                    color={LINE_COLORS[key]}
                     strokeWidth={3}
                   />
                 ))}
               </React.Fragment>
             )}
           </CartesianChart>
-        </View>
-      </View>
-      <View style={styles.controls}>
-        <Text style={styles.sectionTitle}>Displayed</Text>
-        {yKeys.map((key) => (
-          <View style={styles.section} key={key}>
-            <Checkbox
-              style={styles.checkbox}
-              value={displayed[key]}
-              onValueChange={() =>
-                setDisplayed({ ...displayed, [key]: !displayed[key] })
-              }
-              color={displayed[key] ? '#0A0A7C' : undefined}
-            />
-            <Text style={styles.paragraph}>{displayNames[key]}</Text>
-          </View>
-        ))}
+        </ZoomContainer>
       </View>
     </View>
   )
@@ -114,30 +104,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-
-  paragraph: {
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  checkbox: {
-    marginRight: 8,
-    borderRadius: 4,
-  },
   graphContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-  controls: {
-    padding: 16,
-  },
-
-  section: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 8,
+    overflow: 'hidden',
   },
 })

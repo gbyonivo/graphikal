@@ -7,6 +7,7 @@ import { DashPathEffect, useFont } from '@shopify/react-native-skia'
 import React, { useRef, useState } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { CartesianChart, Line } from 'victory-native'
+// @ts-ignore
 import inter from '../../assets/fonts/Inter-Regular.ttf'
 import { GraphControls } from './graph-controls'
 import { GraphLegend } from './graph-legend'
@@ -19,7 +20,6 @@ interface GraphProps {
 
 export function Graph({ dataPoints, containerStyle }: GraphProps) {
   const font = useFont(inter)
-  console.log(font)
 
   const backgroundColor = useThemeColor({}, 'primary')
   const [displayed, setDisplayed] = useState<Record<YKey, boolean>>({
@@ -60,6 +60,7 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
             YKey
           >
             data={dataPoints}
+            domain={{ y: [100, 400] }}
             // this was what i was trying.
             axisOptions={{
               font,
@@ -78,7 +79,7 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
             // TODO: to stretch the graph but I need to fix labels
             padding={{
               left: 0,
-              bottom: 0,
+              bottom: 24,
               right: 8,
               top: 64,
             }}
@@ -92,7 +93,7 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
                 lineWidth: 2,
                 font,
                 tickCount: 5,
-                formatYLabel: (label: number) => label.toFixed(2),
+                formatYLabel: (label: number) => `$${label.toFixed(0)}`,
               },
             ]}
             xAxis={{
@@ -101,10 +102,8 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
               labelPosition: 'outset',
               lineColor: '#ccc',
               lineWidth: 0,
-              labelRotate: 45,
+              labelRotate: 90,
               yAxisSide: 'left',
-              font,
-              tickValues: dataPoints.map((point) => point.timestamp),
               formatXLabel: (label: number) => {
                 return getDate(label)
               },

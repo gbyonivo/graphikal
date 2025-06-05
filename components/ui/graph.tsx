@@ -67,16 +67,17 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
                 top: 0,
               },
             }}
+            // TODO: to stretch the graph but I need to fix labels
             padding={{
-              left: 8,
-              bottom: 8,
+              left: 0,
+              bottom: 0,
               right: 8,
               top: 64,
             }}
             yAxis={[
               {
                 labelColor: '#000000',
-                labelOffset: 4,
+                labelOffset: 16,
                 labelPosition: 'outset',
                 lineColor: '#ccc',
                 linePathEffect: <DashPathEffect intervals={[10, 10]} />,
@@ -87,11 +88,13 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
             ]}
             xAxis={{
               labelColor: '#000000',
-              labelOffset: 4,
+              labelOffset: 40,
               labelPosition: 'outset',
               lineColor: '#ccc',
-              lineWidth: 2,
-              tickCount: 5,
+              lineWidth: 0,
+              tickCount: 10,
+              yAxisSide: 'right',
+              tickValues: dataPoints.map((point) => point.timestamp),
               formatXLabel: (label: number) => {
                 return getDate(label)
               },

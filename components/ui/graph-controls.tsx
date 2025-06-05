@@ -39,7 +39,7 @@ export function GraphControls({
       {/* TODO: change colors for disabled */}
       <TouchableOpacity
         onPress={resetZoom}
-        disabled={resetZoomDisabled}
+        // disabled={resetZoomDisabled}
         style={styles.button}
       >
         <Text style={styles.buttonText}>Reset Zoom</Text>

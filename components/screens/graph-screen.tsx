@@ -2,8 +2,9 @@ import { MarketData } from '@/types/market-data'
 import { checkMarketData } from '@/utils/market-data-helper'
 import axios, { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text } from 'react-native'
+import { Dimensions, SafeAreaView, StyleSheet, Text } from 'react-native'
 import { Header } from '../common/header'
+import { Graph } from '../ui/graph'
 
 const URL =
   'https://mock.apidog.com/m1/892843-874692-default/marketdata/history/AAPL'
@@ -33,7 +34,7 @@ export const GraphScreen = () => {
       <Header title="AAPL Market Data" containerStyle={styles.header} />
       {loading && <Text>Loading...</Text>}
       {!!error && <Text>Error coccured</Text>}
-      {!!data && <Text>Data fetched</Text>}
+      {!!data && <Graph dataPoints={data.data} containerStyle={styles.graph} />}
     </SafeAreaView>
   )
 }
@@ -44,5 +45,10 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 16,
+  },
+  graph: {
+    height: 380,
+    width: Dimensions.get('window').width - 32,
+    borderRadius: 16,
   },
 })

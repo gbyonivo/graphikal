@@ -17,6 +17,8 @@ export const GraphScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true)
+        setError(null)
         const response = await axios.get(URL)
         setData(checkMarketData(response.data))
       } catch (error) {

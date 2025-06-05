@@ -2,6 +2,7 @@ import { LINE_COLORS, YKEYS } from '@/constants/graph'
 import { useThemeColor } from '@/hooks/useThemeColor'
 import { MarketDataPoint } from '@/types/market-data'
 import { YKey } from '@/types/market-data-graph'
+import { getDate } from '@/utils/market-data-helper'
 import { DashPathEffect } from '@shopify/react-native-skia'
 import React, { useRef, useState } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
@@ -81,9 +82,20 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
                 linePathEffect: <DashPathEffect intervals={[10, 10]} />,
                 lineWidth: 2,
                 tickCount: 5,
-                formatYLabel: (label) => label.toFixed(2),
+                formatYLabel: (label: number) => label.toFixed(2),
               },
             ]}
+            xAxis={{
+              labelColor: '#000000',
+              labelOffset: 4,
+              labelPosition: 'outset',
+              lineColor: '#ccc',
+              lineWidth: 2,
+              tickCount: 5,
+              formatXLabel: (label: number) => {
+                return getDate(label)
+              },
+            }}
           >
             {({ points }) => (
               <React.Fragment>

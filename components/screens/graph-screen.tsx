@@ -1,3 +1,5 @@
+import { MarketData } from '@/types/market-data'
+import { checkMarketData } from '@/utils/market-data-helper'
 import axios, { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text } from 'react-native'
@@ -7,7 +9,7 @@ const URL =
   'https://mock.apidog.com/m1/892843-874692-default/marketdata/history/AAPL'
 
 export const GraphScreen = () => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState<MarketData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<AxiosError | null>(null)
 
@@ -15,7 +17,7 @@ export const GraphScreen = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(URL)
-        setData(response.data)
+        setData(checkMarketData(response.data))
       } catch (error) {
         // TODO: handle error better
         setError(error as AxiosError)

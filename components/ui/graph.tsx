@@ -3,10 +3,11 @@ import { useThemeColor } from '@/hooks/useThemeColor'
 import { MarketDataPoint } from '@/types/market-data'
 import { YKey } from '@/types/market-data-graph'
 import { getDate } from '@/utils/market-data-helper'
-import { DashPathEffect } from '@shopify/react-native-skia'
+import { DashPathEffect, useFont } from '@shopify/react-native-skia'
 import React, { useRef, useState } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { CartesianChart, Line } from 'victory-native'
+import inter from '../../assets/fonts/Inter-Regular.ttf'
 import { GraphControls } from './graph-controls'
 import { GraphLegend } from './graph-legend'
 import { ZoomContainer } from './zoom-container'
@@ -17,6 +18,9 @@ interface GraphProps {
 }
 
 export function Graph({ dataPoints, containerStyle }: GraphProps) {
+  const font = useFont(inter)
+  console.log(font)
+
   const backgroundColor = useThemeColor({}, 'primary')
   const [displayed, setDisplayed] = useState<Record<YKey, boolean>>({
     open: true,
@@ -56,6 +60,10 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
             YKey
           >
             data={dataPoints}
+            // this was what i was trying.
+            axisOptions={{
+              font,
+            }}
             xKey="timestamp"
             yKeys={['open', 'high', 'low', 'close']}
             frame={{
@@ -82,6 +90,7 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
                 lineColor: '#ccc',
                 linePathEffect: <DashPathEffect intervals={[10, 10]} />,
                 lineWidth: 2,
+                font,
                 tickCount: 5,
                 formatYLabel: (label: number) => label.toFixed(2),
               },
@@ -92,8 +101,9 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
               labelPosition: 'outset',
               lineColor: '#ccc',
               lineWidth: 0,
-              tickCount: 10,
-              yAxisSide: 'right',
+              labelRotate: 45,
+              yAxisSide: 'left',
+              font,
               tickValues: dataPoints.map((point) => point.timestamp),
               formatXLabel: (label: number) => {
                 return getDate(label)

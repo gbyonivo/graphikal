@@ -7,6 +7,7 @@ import React, { useRef, useState } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { CartesianChart, Line } from 'victory-native'
 import { GraphControls } from './graph-controls'
+import { GraphLegend } from './graph-legend'
 import { ZoomContainer } from './zoom-container'
 
 interface GraphProps {
@@ -65,7 +66,12 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
                 top: 0,
               },
             }}
-            padding={8}
+            padding={{
+              left: 8,
+              bottom: 8,
+              right: 8,
+              top: 64,
+            }}
             yAxis={[
               {
                 labelColor: '#000000',
@@ -93,6 +99,10 @@ export function Graph({ dataPoints, containerStyle }: GraphProps) {
             )}
           </CartesianChart>
         </ZoomContainer>
+        <GraphLegend
+          displayed={displayedLines}
+          containerStyle={styles.legendContainer}
+        />
       </View>
     </View>
   )
@@ -108,5 +118,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     overflow: 'hidden',
+  },
+  legendContainer: {
+    position: 'absolute',
+    top: 32,
   },
 })

@@ -36,6 +36,7 @@ export function GraphControls({
           </View>
         ))}
       </View>
+      {/* TODO: change colors for disabled */}
       <TouchableOpacity
         onPress={resetZoom}
         disabled={resetZoomDisabled}

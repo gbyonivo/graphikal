@@ -1,50 +1,96 @@
-# Welcome to your Expo app 👋
+# Graphikal
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native application featuring interactive market data visualization with customizable graph components.
 
-## Get started
+## Features
 
-1. Install dependencies
+- Interactive market data visualization
+- Multiple data series display (open, high, low, close)
+- Zoom functionality
+- Customizable graph controls
+- Theme support
+- Responsive design
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+- React Native
+- Victory Native (for charting)
+- Shopify React Native Skia (for graphics)
+- TypeScript
 
-   ```bash
-   npx expo start
-   ```
+## Project Structure
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+components/
+  ui/
+    graph.tsx         # Main graph component
+    graph-controls.tsx # Graph control interface
+    graph-legend.tsx   # Graph legend component
+    zoom-container.tsx # Zoom functionality wrapper
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Getting Started
 
-## Learn more
+### Prerequisites
 
-To learn more about developing your project with Expo, look at the following resources:
+- Node.js
+- React Native development environment
+- iOS/Android development environment
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Installation
 
-## Join the community
+1. Clone the repository:
 
-Join our community of developers creating universal apps.
+```bash
+git clone [repository-url]
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Run the application:
+
+```bash
+# For iOS
+npm run ios
+# or
+yarn ios
+
+# For Android
+npm run android
+# or
+yarn android
+```
+
+## Usage
+
+The main graph component can be used as follows:
+
+```typescript
+import { Graph } from './components/ui/graph'
+
+// Example usage
+;<Graph dataPoints={marketData} containerStyle={customStyles} />
+```
+
+### Props
+
+- `dataPoints`: Array of market data points
+- `containerStyle`: Optional custom styles for the container
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
